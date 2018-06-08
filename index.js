@@ -15,11 +15,7 @@ app.post('/errors', (req, res) => {
    res.sendStatus(200); 
 });
 
-app.get('/a', (req, res) => {
-  
-  res.sendStatus(200); 
-  res.json({key : "text"}); 
-});
+
 app.post('/image-classi', (req, res) => {
      
 const url = req.body.conversation.memory['url'];
@@ -36,5 +32,6 @@ const url = req.body.conversation.memory['url'];
   .catch((err) => console.error('movieApi::discoverMovie error: ', err));
   });
 });
-const pport = 5000
-app.listen(pport, () => console.log(`App started on port ${pport}`));
+
+app.set('port', process.env.PORT || 5000);
+app.listen(app.get('port'), () => console.log(`App started on port` + app.get('port')));
