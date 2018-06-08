@@ -15,6 +15,11 @@ app.post('/errors', (req, res) => {
    res.sendStatus(200); 
 });
 
+app.get('/a', (req, res) => {
+  
+  res.sendStatus(200); 
+  res.json({key : "text"}); 
+});
 app.post('/image-classi', (req, res) => {
      
 const url = req.body.conversation.memory['url'];
