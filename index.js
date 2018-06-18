@@ -1,12 +1,14 @@
 const express = require('express');
 const request =  require('request');
 const bodyParser = require('body-parser');
+const proxy = require('http-proxy-middleware');
 const discoverMovie = require('./discoverMovie.js');
 const fs = require('fs');
 
 
 const app = express();
 app.use(bodyParser.json());
+// app.use('/', proxy({target: 'https://a2a9dd04.ngrok.io', changeOrigin: true}));
 
 // Recast will send a post request to /errors to notify important errors
 // described in a json body
@@ -14,9 +16,6 @@ app.post('/errors', (req, res) => {
    console.error(req.body);
    res.sendStatus(200); 
 });
-app.get("/", function(req, res) {
-  res.redirect("https://www.google.com");
-  });
 
 
 app.post('/listProducts', (req, res) => {
