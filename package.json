@@ -1,5 +1,5 @@
 {
-  "name": "image-classi-new",
+  "name": "image-classi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,8 +11,5 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0"
-  },
-  "engines": {
-    "node": "6.11.4"
   }
 }
