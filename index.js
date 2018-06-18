@@ -14,21 +14,74 @@ app.post('/errors', (req, res) => {
    console.error(req.body);
    res.sendStatus(200); 
 });
+app.get("/", function(req, res) {
+  res.redirect("https://www.google.com");
+  });
 
 
+app.post('/listProducts', (req, res) => {
+     
+  const product = req.body.conversation.memory['product'];
+  let replies;
+     if(product.value.indexOf('vacuum') > -1)
+
+     {
+        replies = [{
+          type: 'quickReplies',
+          content: {
+            title: 'Sorry to hear. Which type of vacuum cleaner do you have?',
+            buttons: [
+              {
+                title: 'Cordless',
+                value: 'cordless'
+              },
+              {
+                title: 'Upright',
+                value: 'upright'
+              },
+              {
+                title: 'Canister',
+                value: 'canister'
+              },
+              {
+                title: 'Robotic',
+                value: 'robotic'
+              },
+              {
+                title: "Don't know",
+                value: "Don't know"
+              }
+
+            ]
+          }
+        }
+     ];
+    }
+     res.json({
+      replies: replies,
+    })
+    
+  });
 app.post('/image-classi', (req, res) => {
      
 const url = req.body.conversation.memory['url'];
-	 console.log(url.raw);
+console.log(url.raw);
     var imagePath = url.raw;
-    imagePath = imagePath.split("images/")[1] ? imagePath.split("images/")[1] : imagePath;
-   var request_stream =  request("https://recastdocurepocorsdcinnovation.hana.ondemand.com/public/recast/my-bot-app/images/" + imagePath);
-   request_stream.pipe(fs.createWriteStream("../image-classi/" + imagePath));
+    // imagePath = imagePath.split("images/")[1] ? imagePath.split("images/")[1] : imagePath;
+   var request_stream =  request(imagePath);
+   imagePath = "./" + Math.random() + ".jpg";
+   request_stream.pipe(fs.createWriteStream(imagePath));
+
    request_stream.on('end', function () {
-	discoverMovie(url.raw)
-  .then((replies) => res.json({
-    replies: replies,
-  }))
+              discoverMovie(imagePath)
+  .then((replies) => {res.json({
+    replies: replies
+  })
+  // req.body.conversation.memory.type = { 'raw' : 'upright'};
+ 
+}
+)  
+
   .catch((err) => console.error('movieApi::discoverMovie error: ', err));
   });
 });

@@ -3,7 +3,7 @@ const request =  require('request');
 const axios = require('axios');
 const formData = require('form-data');
 const fs = require('fs');
-const data = new formData();
+
 
 //data.append('u_field', 'my value');
 //data.append('u_data', new Buffer(10));
@@ -12,10 +12,11 @@ const data = new formData();
 const url = `https://sandbox.api.sap.com/ml/imageclassifier/inference_sync`;
 
 function discoverMovie(imagePath) {
-  imagePath = imagePath.split("images/")[1] ? imagePath.split("images/")[1] : imagePath;
+  // imagePath = imagePath.split("images/")[1] ? imagePath.split("images/")[1] : imagePath;
   
     // all done
-    data.append("files", fs.createReadStream('../image-classi/' + imagePath));
+    const data = new formData();
+    data.append("files", fs.createReadStream(imagePath));
 
   return axios.post(url, data, {
     headers: {
@@ -25,23 +26,44 @@ function discoverMovie(imagePath) {
       'APIKey': 'Gca8FzlLwLQndAgOonMORa3ZgMBDGCQX'
     }
   }).then((response) => {
-    //console.log(response.data.predictions[0].results[0].label);
+    let str = response.data.predictions[0].results[0].label;
+    let val = str.split(",")[1] ?str.split(",")[1] : str;
     if (response.length === 0) {
       return [
         {
           type: 'text',
-          content: 'Sorry, but I could not find any results for your request'
+          content: 'Sorry, but could you please upload the photo again?'
         },
       ];
 
     } else {
-      return [
-        {
-          type: 'text',
-          content: 'Hi Its ' + response.data.predictions[0].results[0].label
-        }
-      ];
+
+      if(str.indexOf('vacuum') > -1) {
+        return [
+          {
+            type: 'text',
+            content: 'ok thank you, its upright' + val
+          },
+          {
+            type: 'text',
+            content: 'I am still working on identifying the the broken part.'
+          }
+        ];
+      } else {
+        return [
+          {
+            type: 'text',
+            content: 'Looks like ' + val
+          },
+          {
+            type: 'text',
+            content: 'Can you please upload a photo again?'
+          }
+        ];
+      }
+     
     }
+
 
   }).catch((error) => {
     console.log(error);
