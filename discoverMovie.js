@@ -12,7 +12,7 @@ function discoverMovie(imagePath) {
 // let url = `https://sandbox.api.sap.com/ml/imageclassifier/inference_sync`;
 let url = `https://mlfinternalproduction-image-classifier.cfapps.sap.hana.ondemand.com/api/v2/image/classification/models/vc_type/versions/1`;
   let data = new formData();
-  imagePath = imagePath.split("images/")[1] ? imagePath.split("images/")[1] : imagePath;
+  // imagePath = imagePath.split("images/")[1] ? imagePath.split("images/")[1] : imagePath;
   
     // all done
     data.append("files", fs.createReadStream(imagePath));
